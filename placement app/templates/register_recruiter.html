@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recruiter Registration | Placement Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: url("{{ url_for('static', filename='images/srbg.jpg') }}") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      padding-top: 60px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      max-width: 550px;
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 0.8s ease-in-out;
+      color: #000;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #faf60bff;
+      margin-bottom: 0.3rem;
+    }
+
+    p {
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      color: #e8ecf1ff;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+      color: #e3e6eeff;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="file"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 12px 14px;
+      margin-top: 6px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    input[type="file"] {
+      background: #f9fafb;
+    }
+
+    .form-check {
+      margin-top: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .form-check label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #f0f3faff;
+    }
+
+    .form-check a {
+      color: #dceb0dff;
+      text-decoration: underline;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 14px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      background-color: #2563eb;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1e40af;
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1rem;
+    }
+
+    .footer-text a {
+      color: #e5e911ff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-text a:hover {
+      text-decoration: underline;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .alert-danger {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Recruiter Signup</h2>
+    <p>Hire Talents by Posting Jobs</p>
+
+    <!-- ✅ Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data">
+      <label for="resume">Upload Company Profile</label>
+      <input type="file" name="resume" accept=".doc,.docx,.pdf,.rtf" required />
+
+      <label for="username">Recruiter Name</label>
+      <input type="text" name="username" required />
+
+      <label for="email">Company Email</label>
+      <input type="email" name="email" required />
+
+      <label for="mobile">Mobile Number</label>
+      <input type="tel" name="mobile" pattern="[0-9]{10}" placeholder="e.g. 9876543210" required />
+
+      <label for="city">Company Location</label>
+      <input type="text" name="city" required />
+
+      <label for="password">Password</label>
+      <input type="password" name="password" minlength="6" maxlength="20" required />
+
+      <div class="form-check">
+        <input type="checkbox" name="updates" id="updates" checked />
+        <label for="updates">Send hiring tips & job alerts to my email and WhatsApp</label>
+      </div>
+
+      <div class="form-check">
+        <input type="checkbox" name="terms" id="terms" required />
+        <label for="terms">I agree to the <a href="#">Terms</a> & <a href="#">Privacy Policy</a></label>
+      </div>
+
+      <button type="submit">Continue</button>
+    </form>
+
+    <div class="footer-text">
+      Already have an account? <a href="{{ url_for('login') }}">Log in</a>
+    </div>
+  </div>
+
+</body>
+</html>

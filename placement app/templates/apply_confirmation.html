@@ -1,0 +1,74 @@
+<!-- apply_confirmation.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Application Confirmed</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url("{{ url_for('static', filename='images/aj.jpg') }}") no-repeat center center fixed;
+      background-size: cover;
+      padding: 40px 0;
+      color: #1f2937;
+    }
+
+    .apply-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    h2, h4 {
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .job-details p {
+      margin-bottom: 10px;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .btn-apply {
+      background-color: #3b82f6;
+      border: none;
+      color: white;
+    }
+
+    .btn-apply:hover {
+      background-color: #2563eb;
+    }
+
+    .form-control:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+    }
+
+    @media (max-width: 768px) {
+      .job-details {
+        margin-bottom: 30px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body class="bg-light text-center p-5">
+  <div class="container">
+    <div class="alert alert-success">
+      <h2>✅ Application Submitted!</h2>
+      <p>You’ve successfully applied for <strong>{{ job.title }}</strong> at <strong>{{ job.company }}</strong>.</p>
+    </div>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+  </div>
+</body>
+</html>

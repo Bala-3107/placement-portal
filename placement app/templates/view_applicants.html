@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Applicant Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Animate.css CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+  <style>
+    body {
+      background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center px-4 py-10">
+
+  <div class="bg-white shadow-2xl rounded-2xl p-8 max-w-3xl w-full animate__animated animate__fadeInDown">
+    <h2 class="text-3xl font-extrabold text-center text-gray-800 mb-6 border-b pb-4">
+      👤 Applicant Profile
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-700">
+      <div>
+        <p class="font-semibold">Applicant Name:</p>
+        <p>{{ student.username or 'Not available' }}</p>
+      </div>
+      <div>
+        <p class="font-semibold">Email:</p>
+        <p>{{ student.email or 'Not available' }}</p>
+      </div>
+      <div>
+        <p class="font-semibold">City:</p>
+        <p>{{ student.city or 'Not available' }}</p>
+      </div>
+      <div>
+        <p class="font-semibold">Job Preference:</p>
+        <p>{{ application.job_preference or 'Not specified' }}</p>
+      </div>
+      <div>
+        <p class="font-semibold">Application Date:</p>
+        <p>{{ application.application_date or 'Not specified' }}</p>
+      </div>
+      <div>
+        <p class="font-semibold">Applied for Job:</p>
+        <p>{{ student_job if student_job else 'Unknown Job Title' }}</p>
+      </div>
+    </div>
+
+    <div class="mt-6 sm:col-span-2">
+      <p class="font-semibold mb-2 text-gray-800">Resume:</p>
+      {% if student.resume %}
+        <a href="{{ url_for('download_resume', filename=student.resume) }}"
+           class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md transition duration-300 ease-in-out shadow">
+          📄 Download Resume
+        </a>
+      {% else %}
+        <p class="text-gray-600">No resume uploaded.</p>
+      {% endif %}
+    </div>
+
+    <div class="mt-10 text-center">
+      <a href="{{ url_for('dashboard') }}"
+         class="inline-block text-blue-600 hover:text-blue-800 font-medium transition duration-300">
+        &larr; Back to Dashboard
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

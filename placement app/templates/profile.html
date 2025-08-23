@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile | Placement Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>{{ user['role'] | capitalize }} Profile</h1>
+    <p><strong>Username:</strong> {{ user['username'] }}</p>
+    <p><strong>Email:</strong> {{ user['email'] }}</p>
+    <p><strong>City:</strong> {{ user['city'] }}</p>
+    <p><strong>Role:</strong> {{ user['role'] }}</p>
+
+    {% if user['role'] == 'student' %}
+        <p><strong>Job Preference:</strong> {{ user['job_preference'] or "Not specified" }}</p>
+        {% if user['resume'] %}
+            <p><a href="{{ url_for('download_resume', filename=user['resume']) }}">Download Resume</a></p>
+        {% endif %}
+    {% elif user['role'] == 'recruiter' %}
+        {% if user['resume'] %}
+            <p><a href="{{ url_for('download_resume', filename=user['resume']) }}">Download Resume</a></p>
+        {% endif %}
+    {% endif %}
+
+    <p><a href="{{ url_for('generate_pdf') }}">Download Profile as PDF</a></p>
+    <p><a href="{{ url_for('dashboard') }}">Back to Dashboard</a></p>
+</body>
+</html>

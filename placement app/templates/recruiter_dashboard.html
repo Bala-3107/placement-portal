@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recruiter Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: url("{{ url_for('static', filename='images/rdbg.avif') }}") no-repeat center center fixed;
+      background-size: cover;
+      color: #f8f9fa;
+      min-height: 100vh;
+    }
+    .glass {
+      backdrop-filter: blur(12px);
+      background-color: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="glass p-4 flex justify-between items-center shadow-lg sticky top-0 z-50">
+    <h1 class="text-2xl font-bold text-white">Recruiter Dashboard</h1>
+    <div class="space-x-4">
+      <a href="{{ url_for('post_job') }}" class="px-4 py-2 bg-green-500 hover:bg-green-600 rounded transition">Post Job</a>
+      <a href="{{ url_for('profile') }}" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded transition">Profile</a>
+      <a href="{{ url_for('logout') }}" class="px-4 py-2 bg-red-500 hover:bg-red-600 rounded transition">Logout</a>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto py-12 px-4">
+
+    <!-- Recruiter Info -->
+    <div class="glass rounded-2xl p-6 mb-8 shadow-xl">
+      <h2 class="text-3xl font-semibold mb-2">Welcome, {{ user.username }}</h2>
+      <p class="text-lg"><strong>Email:</strong> {{ user.email or 'N/A' }}</p>
+      <p class="text-lg"><strong>City:</strong> {{ user.city or 'N/A' }}</p>
+    </div>
+
+    <!-- Posted Jobs -->
+    <div class="glass rounded-2xl p-6 mb-8 shadow-xl">
+      <h2 class="text-2xl font-semibold mb-4">Your Posted Jobs</h2>
+      {% if jobs %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for job in jobs %}
+            <div class="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-white/30 transition hover:shadow-2xl text-white relative">
+              <h3 class="text-xl font-semibold mb-1">{{ job.title }}</h3>
+              <p><strong>Company:</strong> {{ job.company }}</p>
+              <p><strong>Location:</strong> {{ job.location }}</p>
+              <p><strong>Type:</strong> {{ job.job_type }}</p>
+              <p><strong>Salary:</strong> ₹{{ job.salary }}</p>
+              <p><strong>Interview Date:</strong> {{ job.interview_date or 'TBD' }}</p>
+              <p><strong>Interview Time:</strong> {{ job.interview_time or 'TBD' }}</p>
+              <p><strong>Venue:</strong> {{ job.interview_place or 'TBD' }}</p>
+
+              <!-- Descriptions -->
+              <div class="mt-3 text-sm text-gray-100">
+                <p><strong>🏢 Company Description:</strong></p>
+                <p class="mb-2">{{ job.company_description or 'Not provided' }}</p>
+                <p><strong>📄 Job Description:</strong></p>
+                <p>{{ job.description or 'Not provided' }}</p>
+              </div>
+
+              <!-- Remove Job Button -->
+              <form action="{{ url_for('remove_job', job_id=job.id) }}" method="post" class="absolute top-3 right-3">
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">Remove</button>
+              </form>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-white text-lg">You haven't posted any jobs yet.</p>
+      {% endif %}
+    </div>
+
+    <!-- Applicants -->
+    <div class="glass rounded-2xl p-6 shadow-xl">
+      <h2 class="text-2xl font-semibold mb-4">Applicants for Your Jobs</h2>
+      {% if applicants %}
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border border-white/20 rounded-lg overflow-hidden">
+            <thead>
+              <tr class="bg-blue-300 text-blue-900">
+                <th class="p-3">Job Title</th>
+                <th class="p-3">Student</th>
+                <th class="p-3">Applied On</th>
+                <th class="p-3">Profile</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white/10 backdrop-blur-sm">
+              {% for app in applicants %}
+                <tr class="hover:bg-white/20 transition">
+                  <td class="p-3">{{ app.job_title }}</td>
+                  <td class="p-3">{{ app.student_name }}</td>
+                  <td class="p-3">{{ app.application_date }}</td>
+                  <td class="p-3">
+                    <a href="{{ url_for('view_applicant_profile', application_id=app.id) }}" class="text-blue-300 hover:underline">View</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="text-white text-lg">No applicants yet.</p>
+      {% endif %}
+    </div>
+
+  </main>
+</body>
+</html>

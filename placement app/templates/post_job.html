@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Post a Job - Placement Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: url("{{ url_for('static', filename='images/rdbg.avif') }}") no-repeat center center fixed;
+      background-size: cover;
+      color: #f9fafb;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      padding: 50px 20px;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .post-job-form {
+      width: 100%;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #f3f4f6;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: none;
+      background: #f9fafb;
+      color: #111827;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: 2px solid #c084fc;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .flash-message {
+      background: #ef4444;
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    .submit-btn {
+      background: #ffffff;
+      color: #7c3aed;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background-color: #f3f4f6;
+      transform: scale(1.03);
+    }
+
+    @media (max-width: 768px) {
+      .post-job-form {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="post-job-form">
+    <h2>📢 Post a New Job</h2>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-message">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('post_job') }}">
+      <label for="job_title">Job Title</label>
+      <input type="text" name="job_title" id="job_title" placeholder="e.g. Software Developer" required />
+
+      <label for="company_name">Company Name</label>
+      <input type="text" name="company_name" id="company_name" placeholder="e.g. TCS Ltd." required />
+
+      <label for="company_website">Company Website</label>
+      <input type="url" name="company_website" id="company_website" placeholder="https://example.com" />
+
+      <label for="contact_person">Contact Person</label>
+      <input type="text" name="contact_person" id="contact_person" placeholder="e.g. HR Manager, Priya" />
+
+      <label for="email">Contact Email</label>
+      <input type="email" name="email" id="email" placeholder="hr@example.com" />
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" name="phone" id="phone" placeholder="+91 98765 43210" />
+
+      <label for="location">Job Location</label>
+      <input type="text" name="location" id="location" placeholder="Chennai, Tamil Nadu" required />
+
+      <label for="job_type">Job Type</label>
+      <select name="job_type" id="job_type" required>
+        <option disabled selected value="">Select Job Type</option>
+        <option>Full-Time</option>
+        <option>Part-Time</option>
+        <option>Internship</option>
+        <option>Contract</option>
+      </select>
+
+      <label for="salary">Salary (Annual ₹)</label>
+      <input type="number" name="salary" id="salary" placeholder="e.g. 600000" />
+
+      <label for="interview_place">Interview Location</label>
+      <input type="text" name="interview_place" id="interview_place" placeholder="Company HQ, Bangalore" />
+
+      <label for="interview_date">Interview Date</label>
+      <input type="date" name="interview_date" id="interview_date" />
+
+      <label for="interview_time">Interview Time</label>
+      <input type="time" name="interview_time" id="interview_time" />
+
+      <label for="company_description">Company Description</label>
+      <textarea name="company_description" id="company_description" placeholder="Write about your company..."></textarea>
+
+      <label for="description">Job Description</label>
+      <textarea name="description" id="description" placeholder="Describe the job role and requirements..." required></textarea>
+
+      <button type="submit" class="submit-btn">📨 Post Job</button>
+    </form>
+  </div>
+</body>
+</html>

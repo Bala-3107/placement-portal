@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: url("{{ url_for('static', filename='images/sdbg.jpg') }}") no-repeat center center fixed;
+      background-size: cover;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      max-width: 700px;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.12);
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      color: #fff;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 32px;
+      color: #ffffff;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .field label {
+      font-weight: 600;
+      color: #d1d5db;
+      font-size: 15px;
+      display: block;
+    }
+
+    .field span,
+    .field a {
+      font-size: 16px;
+      color: #f3f4f6;
+      display: block;
+      margin-top: 6px;
+      word-break: break-word;
+    }
+
+    .btn {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 30px;
+      border: 2px solid #80c6ff;
+      color: #80c6ff;
+      background: transparent;
+      border-radius: 10px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #80c6ff;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🎓 Student Profile</h2>
+
+    <div class="field">
+      <label>Full Name:</label>
+      <span>{{ user['full_name'] if user['full_name'] else 'Not provided' }}</span>
+    </div>
+
+    <div class="field">
+      <label>Email:</label>
+      <span>{{ user['email'] }}</span>
+    </div>
+
+    <div class="field">
+      <label>Phone Number:</label>
+      <span>{{ user['phone'] if user['phone'] else 'Not provided' }}</span>
+    </div>
+
+    <div class="field">
+      <label>City:</label>
+      <span>{{ user['city'] if user['city'] else 'Not provided' }}</span>
+    </div>
+
+    <div class="field">
+      <label>State:</label>
+      <span>{{ user['state'] if user['state'] else 'Not provided' }}</span>
+    </div>
+
+    <div class="field">
+      <label>Country:</label>
+      <span>{{ user['country'] if user['country'] else 'Not provided' }}</span>
+    </div>
+
+    <div class="field">
+      <label>University:</label>
+      <span>{{ user['university'] if user['university'] else 'Not provided' }}</span>
+    </div>
+
+    <div class="field">
+      <label>Degree / Department:</label>
+      <span>{{ user['degree'] if user['degree'] else 'Not provided' }}</span>
+    </div>
+
+    <div class="field">
+      <label>Graduation Year:</label>
+      <span>{{ user['graduation_year'] if user['graduation_year'] else 'Not provided' }}</span>
+    </div>
+
+    <div class="field">
+      <label>Job Preference:</label>
+      <span>{{ user['job_preference'] if user['job_preference'] else 'Not provided' }}</span>
+    </div>
+
+    <div class="field">
+      <label>Short Bio:</label>
+      <span>{{ user['bio'] if user['bio'] else 'Not provided' }}</span>
+    </div>
+
+    <div class="field">
+      <label>Resume / CV:</label>
+      {% if user['resume'] %}
+        <a href="{{ url_for('download_resume', filename=user['resume']) }}" target="_blank">📄 View Uploaded Resume</a>
+      {% else %}
+        <span>Not uploaded</span>
+      {% endif %}
+    </div>
+
+    <a class="btn" href="{{ url_for('edit_student_profile') }}">✏️ Edit Profile</a>
+  </div>
+</body>
+</html>
