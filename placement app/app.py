@@ -30,6 +30,7 @@ BACKUP_DB = DB_PATH + '.bak'
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecretkey")
 
+
 # Mail Configuration
 app.config.update(
     MAIL_SERVER='smtp.gmail.com',
@@ -219,6 +220,12 @@ def init_db():
 def inject_now():
     india_time = datetime.now(pytz.timezone("Asia/Kolkata"))
     return {'now': india_time.strftime("%d-%m-%Y %I:%M %p")}
+
+# Basic paths
+BASE_DIR = os.getenv('DATA_DIR', os.path.abspath(os.path.dirname(__file__)))
+DB_PATH = os.path.join(BASE_DIR, 'database.db')
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'resumes')
+PDF_FOLDER = os.path.join(BASE_DIR, 'static', 'profile_pdfs')
 
 # Authentication / Authorization helpers
 def login_required(f):
@@ -749,6 +756,10 @@ def open_browser():
     webbrowser.open_new("http://127.0.0.1:5000/")
 
 if __name__ == '__main__':
-    init_db()
-    threading.Timer(1, open_browser).start()
+    with app.app_context():
+        init_db()   # <-- run your custom DB initializer
+
+    if os.getenv('AUTO_OPEN_BROWSER') == '1':
+        threading.Timer(1, open_browser).start()
+
     app.run(debug=True)

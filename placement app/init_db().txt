@@ -1,0 +1,73 @@
+import sqlite3
+
+def init_db():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    # Create users table (students + recruiters in one table)
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE,
+        email TEXT,
+        password TEXT,
+        role TEXT,  -- student or recruiter
+        resume TEXT,
+        city TEXT,
+        state TEXT,
+        country TEXT,
+        job_preference TEXT,
+        bio TEXT,
+        company TEXT,
+        phone TEXT,
+        website TEXT,
+        linkedin TEXT
+    )
+    ''')
+
+    # Create jobs table
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS jobs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        recruiter_id INTEGER,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        location TEXT,
+        company TEXT,
+        company_description TEXT,
+        job_type TEXT,
+        salary TEXT,
+        post_date TEXT DEFAULT CURRENT_TIMESTAMP,
+        interview_date TEXT,
+        interview_time TEXT,
+        interview_place TEXT,
+        FOREIGN KEY (recruiter_id) REFERENCES users(id)
+    )
+    ''')
+
+    # Create applications table
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS applications (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        job_id INTEGER,
+        student_id INTEGER,
+        student_name TEXT,
+        email TEXT,
+        city TEXT,
+        job_preference TEXT,
+        application_date TEXT DEFAULT CURRENT_TIMESTAMP,
+        resume TEXT,
+        company TEXT,
+        job_title TEXT,
+        FOREIGN KEY(job_id) REFERENCES jobs(id),
+        FOREIGN KEY(student_id) REFERENCES users(id)
+    )
+    ''')
+
+    conn.commit()
+    conn.close()
+    print("✅ Database initialized successfully.")
+
+# Run this if script is executed directly
+if __name__ == '__main__':
+    init_db()
